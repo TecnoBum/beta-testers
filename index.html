@@ -1,105 +1,507 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--=============== UNICONS ===============-->
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-
-    <!--=============== CSS ===============-->
-    <link rel="stylesheet" href="estilo/style.css">
-
-    <title>Plataforma Sumba</title>
+    <title>Sabor Pinar · Menú digital</title>
+    <!-- Fuentes Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #2d2d2d;
+            background: #fef9f0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* Navegación */
+        nav {
+            background: #ffffff;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #c73e3e;
+        }
+        .logo span {
+            color: #f3a446;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: #4a4a4a;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: #c73e3e;
+        }
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #4a4a4a;
+        }
+        /* Hero */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80') center/cover fixed;
+            color: #fff;
+            text-align: center;
+            padding: 120px 20px;
+        }
+        .hero h1 {
+            font-size: clamp(2.2rem, 6vw, 3.5rem);
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+        .hero p {
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        /* Secciones genéricas */
+        .seccion-titulo {
+            text-align: center;
+            font-size: 2.2rem;
+            margin: 3rem 0 1.5rem;
+            color: #2d2d2d;
+        }
+        .seccion-titulo span {
+            color: #c73e3e;
+        }
+        /* Promociones */
+        .promociones {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0 3rem;
+        }
+        .promo-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            text-align: center;
+            border: 2px solid #f3a446;
+        }
+        .promo-card:hover {
+            transform: translateY(-5px);
+        }
+        .promo-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+        .promo-content {
+            padding: 1.5rem;
+        }
+        .promo-content h3 {
+            color: #c73e3e;
+            margin-bottom: 0.5rem;
+        }
+        .promo-content p {
+            color: #6b6b6b;
+            font-weight: 500;
+        }
+        /* Categorías (botones mejorados) */
+        .categorias {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0 2rem;
+        }
+        .btn-categoria {
+            background: white;
+            border: 2px solid #f3a446;
+            color: #f3a446;
+            padding: 0.8rem 2.2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-categoria i {
+            font-size: 1.2rem;
+        }
+        .btn-categoria:hover {
+            background: #f3a446;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(243, 164, 70, 0.4);
+        }
+        .btn-categoria.activo {
+            background: #c73e3e;
+            border-color: #c73e3e;
+            color: white;
+        }
+        /* Grid de productos */
+        .grid-productos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0 4rem;
+        }
+        .card-producto {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            opacity: 0;
+            animation: fadeInUp 0.5s forwards;
+        }
+        .card-producto:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 30px rgba(199, 62, 62, 0.15);
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card-producto img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+        .card-producto:hover img {
+            transform: scale(1.05);
+        }
+        .card-content {
+            padding: 1.5rem;
+        }
+        .card-producto h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: #2d2d2d;
+        }
+        .card-producto p {
+            color: #6b6b6b;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+        .precio {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #c73e3e;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .precio span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #a1a1a1;
+        }
+        /* Sobre nosotros */
+        .sobre-nosotros {
+            background: white;
+            border-radius: 30px;
+            padding: 3rem;
+            margin: 3rem 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        .sobre-nosotros-contenido h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .sobre-nosotros-contenido p {
+            color: #6b6b6b;
+            margin-bottom: 1rem;
+        }
+        .sobre-nosotros-imagen img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 30px rgba(0,0,0,0.1);
+        }
+        /* Footer */
+        footer {
+            background: #2d2d2d;
+            color: #e0e0e0;
+            padding: 2.5rem 0 1.5rem;
+            margin-top: 3rem;
+        }
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1rem;
+        }
+        .footer-content h3 {
+            color: #f3a446;
+            font-size: 1.8rem;
+        }
+        .footer-contacto {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .footer-contacto div {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .footer-contacto i {
+            color: #f3a446;
+            width: 20px;
+        }
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            font-size: 0.9rem;
+            border-top: 1px solid #4a4a4a;
+            margin-top: 2rem;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem;
+                box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+            }
+            .nav-links.show {
+                display: flex;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .sobre-nosotros {
+                grid-template-columns: 1fr;
+                padding: 2rem;
+            }
+            .footer-contacto {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<br>
-
-<center>
-        
-            <button><img id="imgbutton" src="img/a.png"><p>Muro</p></button>
-            <button> <img id="imgbutton" src="img/b.png"><p>Juegos</p></button>
-            <button> <img id="imgbutton" src="img/c.png"><p>Videos</p></button>
-        
-
-        
-<div>
-            <button><img id="imgbutton" src="img/m.jpg"><p>Mochila</p></button>
-            <button> <img id="imgbutton" src="img/an.jpg"><p>Antiviruz</p></button>
-            <button> <img id="imgbutton" src="img/dom.png"><p>Documentos</p></button>
+    <nav>
+        <div class="container nav-container">
+            <div class="logo">Sabor<span>Pinar</span></div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#promociones">Promociones</a></li>
+                <li><a href="#menu">Menú</a></li>
+                <li><a href="#sobre-nosotros">Sobre nosotros</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></div>
         </div>
+    </nav>
 
-        <div>
-            <button><img id="imgbutton" src="img/ad.jpg"><p>Aplicaciones</p></button>
-            <button> <img id="imgbutton" src="img/mu.png"><p>Música</p></button>
-            <button> <img id="imgbutton" src="img/do.png"><p>Debate</p></button>
+    <section class="hero">
+        <div class="container">
+            <h1>El auténtico sabor de Pinar del Río</h1>
+            <p>Disfruta de nuestra comida criolla, preparada con ingredientes frescos y mucho amor.</p>
         </div>
+    </section>
 
-        <div>
-            <button><img id="imgbutton" src="img/v.png"><p>Canales</p></button>
-            <button> <img id="imgbutton" src="img/n.png"><p>Noticias</p></button>
-            <button> <img id="imgbutton" src="img/e.png"><p>Blog</p></button>
-        </div>
-
-
-
-
-
-    
-    <header class="header" id="header">
-        <nav class="nav container">
-            <a href="#" class="nav__logo"></a>
-
-           
-
-            <div class="nav__menu" id="nav-menu">
-                <ul class="nav__list">
-                    <li class="nav__item">
-
-                        <a href="#" class="nav__link">
-                            <i class="uil uil-estate nav__icon"></i> Inicio
-                        </a>
-                    </li>
-                    <li class="nav__item">
-                        <a href="#" class="nav__link">
-                            <i class="uil uil-user nav__icon"></i> Registrarse
-                        </a>
-                    </li>
-                    <li class="nav__item">
-                        <a href="#" class="nav__link">
-                            <i class="uil uil-file-alt nav__icon"></i> Actualizar
-                        </a>
-                    </li>
-                    <li class="nav__item">
-                        <a href="#" class="nav__link">
-                            <i class="uil uil-briefcase-alt nav__icon"></i> Servicios
-                        </a>
-                    </li>
-                    <li class="nav__item">
-                        <a href="#" class="nav__link">
-                            <i class="uil uil-scenery nav__icon"></i> Portfolio
-                        </a>
-                    </li>
-                    <li class="nav__item">
-                        <a href="#" class="nav__link">
-                            <i class="uil uil-message nav__icon"></i> Contacto 
-                        </a>
-                    </li>
-                </ul>
-                <i class="uil uil-times nav__close" id="nav-close"></i>
-            </div>
-
-            <div class="nav__btns">
-                <i class="uil uil-palette theme-customization"></i>
-
-                <div class="nav__toggle" id="nav-toggle">
-                    <i class="uil uil-apps"></i>
+    <main class="container">
+        <!-- Sección de promociones -->
+        <section id="promociones">
+            <h2 class="seccion-titulo">Promociones <span>especiales</span></h2>
+            <div class="promociones">
+                <div class="promo-card">
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80" alt="Promo 1">
+                    <div class="promo-content">
+                        <h3>Combo Familiar</h3>
+                        <p>Ropa vieja + arroz + frijoles + 4 refrescos</p>
+                        <p style="font-size: 1.3rem; color:#c73e3e;">$890</p>
+                    </div>
+                </div>
+                <div class="promo-card">
+                    <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=765&q=80" alt="Promo 2">
+                    <div class="promo-content">
+                        <h3>2x1 en Postres</h3>
+                        <p>Todos los martes y jueves</p>
+                        <p style="font-size: 1.3rem; color:#c73e3e;">¡No te lo pierdas!</p>
+                    </div>
+                </div>
+                <div class="promo-card">
+                    <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80" alt="Promo 3">
+                    <div class="promo-content">
+                        <h3>Happy Hour</h3>
+                        <p>De 5pm a 7pm: 20% descuento en bebidas</p>
+                        <p style="font-size: 1.3rem; color:#c73e3e;">¡Aprovecha!</p>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
-    <!--=============== JS ===============-->
-    <script src="main.js"></script>
+        </section>
+
+        <!-- Sección de menú con categorías -->
+        <section id="menu">
+            <h2 class="seccion-titulo">Nuestro <span>Menú</span></h2>
+            <div class="categorias">
+                <button class="btn-categoria activo" data-categoria="todos"><i class="fas fa-utensils"></i> Todos</button>
+                <button class="btn-categoria" data-categoria="entradas"><i class="fas fa-leaf"></i> Entradas</button>
+                <button class="btn-categoria" data-categoria="principales"><i class="fas fa-drumstick-bite"></i> Platos principales</button>
+                <button class="btn-categoria" data-categoria="postres"><i class="fas fa-cake"></i> Postres</button>
+                <button class="btn-categoria" data-categoria="bebidas"><i class="fas fa-wine-glass-alt"></i> Bebidas</button>
+            </div>
+
+            <div class="grid-productos" id="productosGrid">
+                <!-- Los productos se generan con JS -->
+            </div>
+        </section>
+
+        <!-- Sección sobre nosotros -->
+        <section id="sobre-nosotros">
+            <div class="sobre-nosotros">
+                <div class="sobre-nosotros-contenido">
+                    <h2>Sobre <span>nosotros</span></h2>
+                    <p><strong>Sabor Pinar</strong> nació en 2010 con la misión de llevar la auténtica cocina pinareña a todos los rincones. Nuestros chefs combinan recetas tradicionales con un toque moderno, utilizando productos locales de la mejor calidad.</p>
+                    <p>Valoramos la calidez familiar y la atención personalizada. Cada plato está hecho con el mismo cariño que en casa.</p>
+                    <p>¡Te esperamos para compartir momentos inolvidables!</p>
+                </div>
+                <div class="sobre-nosotros-imagen">
+                    <img src="https://images.unsplash.com/photo-1552566624-4c141e2c1e3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80" alt="Nuestro restaurante">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contacto">
+        <div class="container">
+            <div class="footer-content">
+                <h3>SaborPinar</h3>
+                <div class="footer-contacto">
+                    <div><i class="fas fa-map-marker-alt"></i> Calle Real #103, Pinar del Río</div>
+                    <div><i class="fas fa-phone-alt"></i> +53 48 75 4321</div>
+                    <div><i class="fas fa-envelope"></i> hola@saborpinar.com</div>
+                </div>
+                <p>Horario: Lunes a Domingo 12:00 pm - 11:00 pm</p>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Sabor Pinar. Todos los derechos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Datos de productos del menú
+        const productos = [
+            // Entradas
+            { id: 1, nombre: "Tostones con mojo", descripcion: "Crujientes tostones de plátano verde servidos con mojo criollo.", precio: 150, categoria: "entradas", imagen: "https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" },
+            { id: 2, nombre: "Tamales en hoja", descripcion: "Tamales de maíz tierno con cerdo, envueltos en hoja de plátano.", precio: 120, categoria: "entradas", imagen: "https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" },
+            { id: 3, nombre: "Casabe con ajo", descripcion: "Casabe crujiente untado con aceite de oliva y ajo.", precio: 90, categoria: "entradas", imagen: "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" },
+            // Platos principales
+            { id: 4, nombre: "Ropa vieja", descripcion: "Carne desmechada en salsa criolla, acompañada de arroz, frijoles y plátanos fritos.", precio: 450, categoria: "principales", imagen: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" },
+            { id: 5, nombre: "Lechón asado", descripcion: "Cerdo asado lentamente, servido con yuca con mojo y arroz moro.", precio: 520, categoria: "principales", imagen: "https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&auto=format&fit=crop&w=1169&q=80" },
+            { id: 6, nombre: "Pescado a la plancha", descripcion: "Filete de pescado fresco con ensalada de aguacate y arroz blanco.", precio: 480, categoria: "principales", imagen: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80" },
+            // Postres
+            { id: 7, nombre: "Flan de queso", descripcion: "Suave flan de queso crema con caramelo.", precio: 180, categoria: "postres", imagen: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=1089&q=80" },
+            { id: 8, nombre: "Arroz con leche", descripcion: "Arroz con leche cremoso espolvoreado con canela.", precio: 140, categoria: "postres", imagen: "https://images.unsplash.com/photo-1516714435131-44d6b64dc6a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1160&q=80" },
+            { id: 9, nombre: "Cascos de guayaba con queso", descripcion: "Dulce de guayaba acompañado de queso crema.", precio: 160, categoria: "postres", imagen: "https://images.unsplash.com/photo-1587314168485-3236d6710814?ixlib=rb-4.0.3&auto=format&fit=crop&w=1078&q=80" },
+            // Bebidas
+            { id: 10, nombre: "Mojito cubano", descripcion: "Ron, hierbabuena, limón, azúcar y soda.", precio: 250, categoria: "bebidas", imagen: "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?ixlib=rb-4.0.3&auto=format&fit=crop&w=765&q=80" },
+            { id: 11, nombre: "Jugo de caña", descripcion: "Refrescante jugo de caña de azúcar con limón.", precio: 100, categoria: "bebidas", imagen: "https://images.unsplash.com/photo-1605450640025-42f764242b32?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" },
+            { id: 12, nombre: "Cerveza Cristal", descripcion: "La clásica cerveza cubana bien fría.", precio: 120, categoria: "bebidas", imagen: "https://images.unsplash.com/photo-1578911595546-bc37f98ed990?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80" }
+        ];
+
+        // Referencias
+        const grid = document.getElementById('productosGrid');
+        const botonesCategoria = document.querySelectorAll('.btn-categoria');
+
+        // Función para renderizar productos
+        function renderizarProductos(categoria) {
+            const filtrados = categoria === 'todos' 
+                ? productos 
+                : productos.filter(p => p.categoria === categoria);
+            
+            if (filtrados.length === 0) {
+                grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; padding:3rem; color:#888;">No hay productos en esta categoría.</p>`;
+                return;
+            }
+
+            grid.innerHTML = filtrados.map((p, index) => `
+                <div class="card-producto" style="animation-delay: ${index * 0.1}s;">
+                    <img src="${p.imagen}" alt="${p.nombre}">
+                    <div class="card-content">
+                        <h3>${p.nombre}</h3>
+                        <p>${p.descripcion}</p>
+                        <div class="precio">
+                            $${p.precio} <span>MXN</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Event listeners para botones de categoría
+        botonesCategoria.forEach(btn => {
+            btn.addEventListener('click', () => {
+                botonesCategoria.forEach(b => b.classList.remove('activo'));
+                btn.classList.add('activo');
+                const categoria = btn.getAttribute('data-categoria');
+                renderizarProductos(categoria);
+            });
+        });
+
+        // Render inicial
+        renderizarProductos('todos');
+
+        // Menú hamburguesa
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('show');
+            });
+        });
+    </script>
 </body>
 </html>
